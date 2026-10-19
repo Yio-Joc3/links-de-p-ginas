@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Hub de Redes · Trabajo en equipo</title>
+<link rel="stylesheet" href="styles.css">
+</head>
+<body>
+<header class="hero">
+<canvas id="net" aria-hidden="true"></canvas>
+<div>
+<span class="badge"><i></i>Redes · Proyecto en equipo</span>
+<h1>Centro de <span>Redes y Comunicaciones</span></h1>
+<p>Todos los trabajos del equipo reunidos en un solo lugar. Explora cada proyecto con un clic.</p>
+<div class="stats"><div><b>5</b><small>Proyectos</small></div><div><b>5</b><small>Integrantes</small></div><div><b>1</b><small>Equipo</small></div></div>
+</div>
+</header>
+<main>
+<div class="bar"><h2>Proyectos del equipo</h2><input id="q" type="search" placeholder="Buscar proyecto…" aria-label="Buscar proyecto"></div>
+<div class="grid" id="grid"></div>
+<div class="empty" id="empty">No se encontraron proyectos.</div>
+</main>
+<footer>Hub de Redes · Trabajo en equipo · Enlaces alojados en GitHub Pages</footer>
+<script>
+var items=[
+{t:"Redes Generales",u:"https://adle61.github.io/REDES_GENERALES/"},
+{t:"Empezando de nuevo 3",u:"https://anderhuaccachiclemente-spec.github.io/empezando-de-nuevo-3/"},
+{t:"Parcial · David Huaccachi",u:"https://davidhaccachicusi-coder.github.io/Davidhuaccachi-parcial./"},
+{t:"Proyecto O-O",u:"https://yio-joc3.github.io/o-o/"},
+{t:"Nuevo comienzo",u:"https://luisramospaul-jpg.github.io/nuevo-comienzo/"}
+];
+var grid=document.getElementById("grid");
+items.forEach(function(it,i){
+var host=it.u.replace("https://","");
+var c=document.createElement("article");c.className="card";c.dataset.k=(it.t+" "+host).toLowerCase();
+c.innerHTML='<div class="num">'+(i+1)+'</div><h3></h3><p class="host"></p><div class="act"><a class="btn p" target="_blank" rel="noopener">Abrir proyecto ↗</a><button class="btn" type="button">Copiar</button></div>';
+c.querySelector("h3").textContent=it.t;c.querySelector(".host").textContent=host;
+c.querySelector("a").href=it.u;
+var b=c.querySelector("button");
+b.onclick=function(){var done=function(){b.textContent="¡Copiado!";setTimeout(function(){b.textContent="Copiar"},1500)};
+try{navigator.clipboard.writeText(it.u).then(done,done)}catch(e){done()}};
+grid.appendChild(c)});
+document.getElementById("q").oninput=function(e){var v=e.target.value.toLowerCase(),n=0;
+grid.querySelectorAll(".card").forEach(function(c){var s=c.dataset.k.indexOf(v)>-1;c.style.display=s?"":"none";if(s)n++});
+document.getElementById("empty").style.display=n?"none":"block"};
+(function(){var cv=document.getElementById("net"),x=cv.getContext("2d"),P=[],W,H;
+function rs(){W=cv.width=cv.offsetWidth;H=cv.height=cv.offsetHeight}
+rs();window.addEventListener("resize",rs);
+for(var i=0;i<38;i++)P.push({x:Math.random()*W,y:Math.random()*H,vx:(Math.random()-.5)*.35,vy:(Math.random()-.5)*.35});
+function col(){return getComputedStyle(document.documentElement).getPropertyValue("--node").trim()||"#0a7cff"}
+function f(){x.clearRect(0,0,W,H);var c=col();
+P.forEach(function(p){p.x+=p.vx;p.y+=p.vy;if(p.x<0||p.x>W)p.vx*=-1;if(p.y<0||p.y>H)p.vy*=-1});
+x.strokeStyle=c;x.fillStyle=c;
+for(var i=0;i<P.length;i++){for(var j=i+1;j<P.length;j++){var dx=P[i].x-P[j].x,dy=P[i].y-P[j].y,d=Math.sqrt(dx*dx+dy*dy);
+if(d<140){x.globalAlpha=(1-d/140)*.45;x.beginPath();x.moveTo(P[i].x,P[i].y);x.lineTo(P[j].x,P[j].y);x.stroke()}}
+x.globalAlpha=.8;x.beginPath();x.arc(P[i].x,P[i].y,2.2,0,6.283);x.fill()}
+requestAnimationFrame(f)}
+if(!window.matchMedia("(prefers-reduced-motion:reduce)").matches)f();else{P.forEach(function(){});f()}
+})();
+</script>
+</body>
+</html>
